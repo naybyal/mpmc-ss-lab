@@ -1,93 +1,104 @@
 /*
- * 	Program	-> Shortest Job First CPU Scheduling Algorithm
- * 	Author	-> rosettastoned12
+ * 	Program	-> Round Robin CPU Scheduling Algorithm
+ * 	Author 	-> rosettastoned12
  * */
 
 #include<stdio.h>
 
 struct process {
-	/*
-	 * 	TAT	->	Turn Around Time
-	 * 	WT	->	Waiting Time
-	 * 	BT	->	Burst Time
-	 */
-	int tat, wt, bt, id;
-}p[10], temp;
+	int id, bt, rbt, tat, wt;
+}p[50], out[50];	// out[] array represents the order of process execution
 
 int main() {
-	int i, j, numberOfProcesses;
-
-	int total_TAT = 0, total_WT = 0;
+	int i, j, k=1, timeQuanta, numberOfProcesses, netBurst=0; 
+	int totalTAT=0, totalWT=0;
 
 	printf("Reading the number of processes... ");
 	scanf("%d", &numberOfProcesses);
 
-	// Initializing the Waiting Time of first process to 0
-	p[0].wt = 0;
-
-	printf("Reading the Burst Times of each process... \n");
-	for(i=0; i<numberOfProcesses; i++) {
-		printf("Process %d\t->\t",i+1);
-		scanf("%d", &p[i].bt);
-		p[i].id = i + 1;
-	}
-
-	// Sorting the process by increasing burst times
+	printf("Reading the burst time of each process... \n");
 	for (i=0; i<numberOfProcesses; i++) {
-		for (j=0; j<numberOfProcesses-i-1; j++) {
-			if (p[j].bt > p[j+1].bt) {
-				temp = p[j];
-				p[j] = p[j+1];
-				p[j+1] = temp;
+		p[i].id = i+1;
+		printf("Process %d\t->\t", i+1);
+		scanf("%d", &p[i].bt);
+		// Initializing RBT of each process with their BTs
+		p[i].rbt = p[i].bt;
+		netBurst += p[i].bt;
+	}
+	
+	// Read the time slice
+	printf("\nReading the time slice... ");
+	scanf("%d", &timeQuanta);
+
+	// Initialize the TAT of the first process with 0
+	out[0].tat = 0;
+
+	int complete = 0;
+
+	while (complete != netBurst) {
+		for (i=0; i<numberOfProcesses; i++) {
+			if (p[i].rbt != 0) {
+				out[k].id = i+1;
+				
+				// Execute if the RBT-timeQuanta of the process is less than or equal to 0
+				if (p[i].rbt - timeQuanta <= 0) {
+					out[k].wt = out[k-1].tat; // WT of current is TAT of previous
+					out[k].bt = p[i].rbt;
+					out[k].tat = out[k].wt + out[k].bt; // TAT = WT + BT
+
+					// Set RBT of process to 0
+					p[i].rbt = 0;
+
+					// Update TAT of the process
+					p[i].tat = out[k].tat;
+					
+					// Update WT of the process
+					p[i].wt = p[i].tat - p[i].bt;
+
+					// Set complete to the TAT of kth process and increment k
+					complete = out[k].tat;
+					k++;	
+					
+					// Update totalTAT and totalWT
+					totalTAT += p[i].tat;
+					totalWT += p[i].wt;	
+				} else {
+					// If the remaining burst time is greater than 0
+
+					out[k].wt = out[k-1].tat;	// WT of kth process is the TAT of the previous
+					
+					// TAT of kth process will be sum of WT and timeQuanta
+					out[k].tat = out[k].wt + timeQuanta;
+
+					// Decrement timeQuanta from the RBT of each process
+					p[i].rbt -= timeQuanta;
+
+					// Set complete to the TAT of the kth process and increment k
+					complete = out[k].tat;
+					k++;
+				}
 			}
 		}
 	}
 
-	/*
-	 * Waiting Time of each process is 
-	 * the sum of Burst Time and Waiting Time
-	 * of the previous process
-	 */
-	for (i=1; i<numberOfProcesses; i++) {
-		p[i].wt = p[i-1].wt + p[i-1].bt;
-		total_WT += p[i].wt;
-	}
+	printf("\nPROCESS\tWT\tTAT\tBT\n");
+	for (i=0; i<numberOfProcesses; i++)
+		printf("%d\t%d\t%d\t%d\n", p[i].id, p[i].wt, p[i].tat, p[i].bt);
+	printf("\n");
 
-	/*
-	 * Turn Arount Time of each process is 
-	 * the sum of Waiting Time and Burst Time 
-	 * of the current process
-	 * */
-	for (i=0; i<numberOfProcesses; i++) {
-		p[i].tat = p[i].bt + p[i].wt;
-		total_TAT += p[i].tat;
-	}
+	float avgTAT = (float)totalTAT/numberOfProcesses;
+	float avgWT = (float)totalWT/numberOfProcesses;
 
-	// Displaying the process, BT, WT and TAT as a table
-        printf("\nPROCESS\tBT\tWT\tTAT");
-        for (i=0; i<numberOfProcesses; i++) {
-                printf("\nP%d\t%d\t%d\t%d", p[i].id, p[i].bt, p[i].wt, p[i].tat);
-        }
-        printf("\n");
+	printf("\nAverage TAT\t->\t%.1f", avgTAT);
+	printf("\nAverage WT\t->\t%.1f\n", avgWT);
 
-        // Average Time = Total Time / Number of Processes
-        float avg_TAT = (float)total_TAT / numberOfProcesses;
-        float avg_WT = (float)total_WT / numberOfProcesses;
-        printf("\nAverage TAT\t->\t%.1fms", avg_TAT);
-        printf("\nAverage WT \t->\t%.1fms", avg_WT);
-        printf("\n\n");
-
-        //Displaying GANTT Chart
-        printf("----GANTT Chart----\n");
-        for (i=0; i<numberOfProcesses; i++)
-                printf("| \tP%d \t", p[i].id);
-        printf("|\n");
-        printf("0\t");
-        for (i=0; i<numberOfProcesses; i++)
-                printf("\t%d\t", p[i].tat);
-        printf("\n");
-
-        printf("\n---LEGEND---\nBT  -> Burst Time\nWT  -> Waiting Time\nTAT -> Turn Around Time");
-        printf("\n------------\n");
-        return 0;
+	// Displaying the GANTT chart
+	printf("\n---GANTT CHART---\n");
+	for (i=1; i<k; i++) 
+		printf("|\tP%d\t",out[i].id);
+	printf("|\n");
+	for (i=0; i<k; i++) 
+		printf("%d\t\t", out[i].tat);
+	printf("\n");		
+	return 0;
 }
