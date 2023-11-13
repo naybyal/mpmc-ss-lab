@@ -2,7 +2,6 @@
 
 #include<stdio.h>
 #include<string.h>
-#include<math.h>
 #include<stdlib.h>
 #include<curses.h>
 
@@ -148,6 +147,6 @@ int main()
 	}
 	fprintf(fp5,"\t%s\t%s\t%s",label,opcode,operand);
 	fprintf(fp6,"\nE^00%s",st_addr);
-	getch();
+	return 0;
 }
 
