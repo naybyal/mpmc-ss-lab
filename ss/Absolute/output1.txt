@@ -1,0 +1,37 @@
+........................................................
+MEMORY ADDRESS CONTENT
+
+
+1000		14103348 20390010 36281030 30101548 
+
+1010		20613C10 03002102 0C103900 102Dxxxx 
+
+1020		xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx 
+
+1030		xxxxxxxx xxxxxxxx xxxxxx0C 10364820 
+
+1023		61D81033 4C000045 4F460000 00000003 
+
+1033		000000xx xxxxxxxx xxxxxxxx xxxxxxxx 
+
+1060		xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx 
+
+1070		xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx 
+
+1080		xxxxxxxx xxxxxxxx xxxxxxxx xx041030 
+
+105c		00103030 203F0000 D800205D 28103030 
+
+106c		20575490 302C205E 38203Fxx xxxxxxxx 
+
+10b0		xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx 
+
+10c0		xxxxxxxx xxxxxxxx 1010364C 00000010 
+
+107f		00041030 E0207930 20645090 39DC2079 
+
+108f		2C1036xx xxxxxxxx xxxxxxxx xxxxxxxx 
+
+10f0		xxxxxxxx xxxxxxxx xxxxxxxx xxxx3820 
+
+1095		644C0000 
