@@ -2,27 +2,23 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include<curses.h>
+
 
 char opcode[10],operand[10],label[10],ch,t1[20],t2[20],t3[10];
 int locctr,start,len,s=-1,o=-1,i,j=0,flag,size=0,opd;
 FILE *fp1,*fp2,*fp3,*fp4,*fp5;
 
-struct SYMTAB
-{
+struct SYMTAB {
     char label[10];
     int addr;       
 }ST[30];
 
-struct OPTAB
-{
+struct OPTAB {
     char opcode[10],hexcode[10];
 }OT[30];
 
-void read_OPTAB()
-{
-    while(1)
-    {
+void read_OPTAB() {
+    while(1) {
             o++;
             fscanf(fp2,"%s%s",OT[o].opcode,OT[o].hexcode); 
             if(getc(fp2)==EOF)       
@@ -30,8 +26,7 @@ void read_OPTAB()
     }                  
 }
 
-int main()
-{
+int main() {
 	fp1=fopen("./input.txt","r");
 	fp2=fopen("./optab.txt","r");
 	fp3=fopen("./symtab.txt","w");
@@ -40,9 +35,8 @@ int main()
 	read_OPTAB();    // read OPTAB
 	
     //read_line();	// read the first line 
-    fscanf(fp1,"%s%s%x",label,opcode,&opd);
-	if(strcmp(opcode,"START")==0)
-	{
+    	fscanf(fp1,"%s%s%x",label,opcode,&opd);
+	if(strcmp(opcode,"START")==0){
 		start=opd;
 		locctr=start;
 		fprintf(fp4,"\t%s\t%s\t%x\n",label,opcode,opd);
@@ -52,8 +46,7 @@ int main()
 		locctr=0;
 
 	// do until END
-	while(strcmp(opcode,"END")!=0)
-	{
+	while(strcmp(opcode,"END")!=0) {
 		fprintf(fp4,"%x\t%s\t%s\t%s\n",locctr,label,opcode,operand);  //Write this line into intermediate file
 		if(strcmp(label,"-")!=0)   //if label present
 		{

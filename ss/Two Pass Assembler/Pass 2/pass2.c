@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include<curses.h>
+
 
 char t1[20],t2[20],t3[10],t4[10],address[10],label[10],opcode[10],operand[10],length[10],size[10],a[10],ad[10],symbol[10],add[10],st_addr[10];  //ch;
 int s=-1,o=-1,i,j,len;
