@@ -112,7 +112,7 @@ void main() {
 	
 	fclose(fp1);
 	fclose(fp2);
-	
+	/*	
 	printf("\n\n The contents of output file.. \n\n");
 	
 	fp2=fopen("OUT.txt","r");
@@ -122,7 +122,7 @@ void main() {
 		ch=fgetc(fp2); 
 	}
 	fclose(fp2);
-
+	*/
 }
 
 
