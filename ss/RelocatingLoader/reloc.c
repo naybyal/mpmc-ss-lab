@@ -93,7 +93,7 @@ void main() {
 			convert(bitmask);
 			len=strlen(bit);
 			if(len>=11)
-			len=10;
+				len=10;
 			for(i=0;i<len;i++) {
 				fscanf(fp1,"%x",&opcode);
 				fscanf(fp1,"%x",&addr);
